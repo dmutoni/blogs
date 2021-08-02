@@ -1,4 +1,4 @@
-import { ScrollView, Image, StyleSheet, ImageBackground, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import * as React from 'react';
 import { Icon } from 'react-native-elements';
 import colors from '../constants/colors';

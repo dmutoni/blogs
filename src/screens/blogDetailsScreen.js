@@ -9,14 +9,10 @@ const BlogDetailsScreen = ({
     navigation,
     dispatch,
     post,
-    comments,
-    hasErrors,
     route,
-    loading,
 }) => {
     const { id } = route.params
     useEffect(() => {
-        // dispatch(fetchComments(id))
         dispatch(fetchPost(id))
     }, [dispatch])
 

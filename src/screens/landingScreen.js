@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
         fontFamily : 'poppins-bold'
     },
     boldText: {
-        // fontWeight: 'bold',
         fontFamily : 'poppins-bold',
         fontSize: 20
     },

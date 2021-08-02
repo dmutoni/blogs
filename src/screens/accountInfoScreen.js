@@ -68,8 +68,9 @@ const styles = StyleSheet.create({
         marginTop: 50
     },
     headerContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
+        flexDirection: 'column',
+        backgroundColor: colors.mainGreen,
+        justifyContent: 'flex-start'
     },
     profilePic: {
         margin: 130,
@@ -79,6 +80,7 @@ const styles = StyleSheet.create({
     },
     backgroundImage: {
         justifyContent: 'flex-start',
+        alignItems: 'flex-start',
         width: '100%',
         backgroundColor: colors.blueColor,
         borderBottomStartRadius: 100,

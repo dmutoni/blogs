@@ -15,6 +15,7 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import rootReducer from './src/reducers'
+import TestingScreen from './src/screens/testingScreen';
 
 const Stack = createStackNavigator();
 

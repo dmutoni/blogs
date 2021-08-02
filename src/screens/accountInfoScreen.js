@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     position: {
-        fontWeight: 'bold',
+        fontFamily: 'poppins-bold',
         fontSize: 20
     },
     blogDetails: {
@@ -116,7 +116,8 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     grayText: {
-        color: colors.grayColor
+        color: colors.grayColor,
+        fontFamily: 'poppins-regular',
     },
     buttonContainer: {
         width: '100%',
@@ -139,7 +140,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     blackText: {
-        color: colors.blackColor
+        color: colors.blackColor,
+        fontFamily: 'poppins-regular',
     },
     footer: {
         height:'8%',

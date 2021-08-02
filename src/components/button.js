@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 21,
     letterSpacing: 0.25,
+    fontFamily: 'poppins-regular',
     color: 'white',
   },
 });

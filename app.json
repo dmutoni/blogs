@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "A management app for blogs",
+    "githubUrl": "https://github.com/dmutoni/blogs"
   }
 }

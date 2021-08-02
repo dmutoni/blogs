@@ -52,18 +52,18 @@ const BlogsScreen = ({ navigation, dispatch, loading, loadingErrors, posts, hasE
               <Text style={styles.postTitle}>{post.title.substring(1,30)}</Text>
               <View style={styles.commentsAndLikesContainer}>
                 <View style={styles.likeCommentDetailsContainer}>
-                  <Text>22.8k </Text>
+                  <Text style={{fontFamily: 'poppins-bold',}}>22.8k </Text>
                   <Icon name="thumb-up" />
                 </View>
                 <View style={styles.likeCommentDetailsContainer}>
-                  <Text>22.8k </Text>
+                  <Text style={{fontFamily: 'poppins-bold'}}>22.8k </Text>
                   <Icon name="maps-ugc" />
                 </View>
               </View>
             </View>
           </TouchableOpacity>
           ))
-        ) : (<Text>Loading blogs ... please wait  </Text>)}
+        ) : (<Text style={{fontFamily: 'poppins-bold',}}>Loading blogs ... please wait  </Text>)}
        
       </ScrollView>
       <View style={styles.proText}>
@@ -71,7 +71,7 @@ const BlogsScreen = ({ navigation, dispatch, loading, loadingErrors, posts, hasE
       </View>
       <View style={styles.filtersContainer}>
         <View>
-          <Text>Latest</Text>
+          <Text style={{fontFamily: 'poppins-bold'}}>Latest</Text>
           <View
             style={styles.activeLine}
           />
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     width: 25,
   },
   boldText: {
-    fontWeight: 'bold',
+    fontFamily: 'poppins-bold',
     fontSize: 25
   },
   globalPostContainer: {
@@ -150,19 +150,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   grayText: {
-    color: colors.grayColor
+    color: colors.grayColor,
+    fontFamily: 'poppins-regular',
   },
   proText: {
     backgroundColor: '#ffd56e',
     width: '10%',
     alignItems: 'center',
+    fontFamily: 'poppins-regular',
     borderRadius: 10,
     marginStart: '75%'
   },
   postTitle: {
     marginVertical: 5,
     fontSize: 16,
-    fontWeight: 'bold'
+    fontFamily: 'poppins-bold',
   },
   tinyImage: {
     width: 140,
@@ -179,6 +181,7 @@ const styles = StyleSheet.create({
     margin: 15,
     backgroundColor: '#fff',
     borderRadius: 15,
+    fontFamily: 'poppins-regular',
     width: 50,
     justifyContent: 'center',
     alignItems: 'center',

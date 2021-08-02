@@ -39,12 +39,13 @@ const styles = StyleSheet.create({
     },
     welcomeText: {
         marginLeft: 20,
-        fontWeight: 'bold',
         fontSize: 25,
+        fontFamily: 'poppins-bold',
         padding: 5,
     },
     text: {
         color: colors.grayColor,
+        fontFamily: 'poppins-regular',
         marginLeft: 10,
         lineHeight: 21,
         letterSpacing: 0.8
@@ -52,6 +53,7 @@ const styles = StyleSheet.create({
     AccessText: {
         color: colors.grayColor,
         marginLeft: 45,
+        fontFamily: 'poppins-regular',
         lineHeight: 21,
         letterSpacing: 0.8
     },

@@ -1,4 +1,4 @@
-import { ScrollView, Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import * as React from 'react';
 import { Icon } from 'react-native-elements';
 import colors from '../constants/colors';
@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
     },
     headerTitle: {
         marginLeft: 100,
-        fontWeight: 'bold',
-        fontSize: 18
+        fontSize: 18,
+        fontFamily: 'poppins-bold',
     },
     profilePic: {
         width: '100%',
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         borderRadius: 15
     },
     title: {
-        fontWeight: 'bold',
+        fontFamily: 'poppins-bold',
         fontSize: 20
     },
     grayText: {
@@ -102,7 +102,8 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     grayNormalText: {
-        color: colors.grayColor
+        color: colors.grayColor,
+        fontFamily: 'poppins-regular',
     }
 })
 export default ProfileScreen;

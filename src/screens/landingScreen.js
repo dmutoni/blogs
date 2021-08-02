@@ -32,7 +32,7 @@ const LandingScreen = ({navigation}) => {
                 </View>
                 <View style={styles.contactContainer}>
                     <Icon name="check-circle-outline" color="#000" />
-                    <Text> Continue with </Text>
+                    <Text style={{fontFamily : 'poppins-regular'}}> Continue with </Text>
                     <Text style={styles.phoneText}>Phone no.</Text>
                 </View>
             </View>
@@ -71,17 +71,20 @@ const styles = StyleSheet.create({
     },
     grayText: {
         color: colors.grayColor,
-        marginBottom: 30
+        marginBottom: 30,
+        fontFamily : 'poppins-regular'
     },
     blackText: {
-        color: colors.blackColor
+        color: colors.blackColor,
+        fontFamily : 'poppins-bold'
     },
     boldText: {
-        fontWeight: 'bold',
-        fontSize: 25
+        // fontWeight: 'bold',
+        fontFamily : 'poppins-bold',
+        fontSize: 20
     },
     phoneText: {
-        fontWeight: 'bold',
+        fontFamily : 'poppins-bold',
     },
     loginButton: {
         borderColor: colors.grayColor,

@@ -44,7 +44,7 @@ const BlogDetailsScreen = ({
                         <Text style={styles.readText}>Read Complete Story</Text>
                     </View>
                     <View style={styles.tinyContainer}>
-                        <Text style={styles.greenText}>Buy Premium Plan $20</Text>
+                        <Text style={styles.greenText}>Buy Premium Plan</Text>
                         <Icon style={styles.iconName} name="close" color="#b2b2b2" />
                     </View>
                 </View>
@@ -76,19 +76,23 @@ const styles = StyleSheet.create({
         borderRadius: 15
     },
     postTitle: {
-        fontWeight: 'bold',
+        fontFamily: 'poppins-bold',
         fontSize: 23,
         marginBottom: 10
     },
     grayText: {
-        color: colors.grayColor
+        color: colors.grayColor,
+        fontFamily: 'poppins-regular',
+        fontSize: 15,
+        // marginBottom: 20
     },
     readText: {
-        fontSize: 12
+        fontSize: 12,
+        fontFamily: 'poppins-regular',
     },
     postDesriptionContainer: {
         width: '100%',
-        height: '40%',
+        height: '35%',
     },
     authorContainer: {
         marginVertical: 10,
@@ -99,17 +103,17 @@ const styles = StyleSheet.create({
         backgroundColor: colors.inputColor,
         width: '100%',
         height: '6%',
-        padding: 5,
-        marginTop: 40,
+        padding: 2,
         alignItems: 'center',
         borderRadius: 30,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     tinyContainer: {
         flexDirection: 'row'
     },
     greenText: {
         color: colors.mainGreen,
+        fontFamily: 'poppins-regular',
         fontSize: 12
     },
 })

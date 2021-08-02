@@ -1,9 +1,11 @@
-import { Image, StyleSheet, Text, View } from "react-native";
-import * as React from 'react';
+import { Image, StyleSheet, Switch, Text, View } from "react-native";
+import React, {useState} from 'react';
 import { Icon } from 'react-native-elements';
 import colors from '../constants/colors';
 
 const ProfileScreen = ({ navigation }) => {
+    const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     return <View style={styles.container}>
         <View style={styles.body}>
             <View style={styles.headerContainer}>
@@ -47,7 +49,13 @@ const ProfileScreen = ({ navigation }) => {
                 </View>
                 <View style={styles.profileDetailsContainer}>
                     <Text style={styles.grayNormalText}>Notification</Text>
-                    <Icon name="toggle-on" color="#b2b2b2" />
+                    <Switch
+                        trackColor={{ false: "#000", true: "#08b1bd" }}
+                        thumbColor={isEnabled ? "#fff" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={toggleSwitch}
+                        value={isEnabled}
+                    />
                 </View>
             </View>
         </View>

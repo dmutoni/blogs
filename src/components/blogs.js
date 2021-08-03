@@ -6,101 +6,29 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import colors from '../constants/colors';
 import SearchBox from '../components/searchBox';
 const BlogsComponent = ({ navigation }) => {
-    return <View style={styles.container}>
-        <View style={styles.body}>
-            <View style={styles.headerContainer}>
-                <View>
-                    <View
-                        style={styles.horizLine}
-                    />
-                    <View
-                        style={[styles.horizLine, styles.firstHoriz]}
-                    />
-                </View>
-                <TouchableOpacity>
-                    <Image
-                        style={styles.tinyLogo}
-                        source={require('../../assets/images/profilePicture.png')}
-                    />
-                </TouchableOpacity>
-            </View>
-            <View>
-                <Text style={styles.boldText}>Blogs</Text>
-                <SearchBox />
-            </View>
-            <ScrollView>
-                <View style={styles.postContainer}>
-                    <ImageBackground source={require('../../assets/images/profilePicture.png')} imageStyle={styles.backgroundImage}
-                        resizeMode="cover"
-                        style={styles.backgroundImage}>
-                        <View style={styles.postDate}>
-                            <Text> 3 Feb</Text>
-                        </View>
-                    </ImageBackground>
-                    <View style={styles.popularityContainer}>
-                        <Text style={styles.grayText}>05 Mins Read</Text>
-                        <Text style={styles.postTitle}>Make design systems people want to use</Text>
-                        <View style={styles.commentsAndLikesContainer}>
-                            <View style={styles.likeCommentDetailsContainer}>
-                                <Text>22.8k </Text>
-                                <Icon name="thumb-up" />
-                            </View>
-                            <View style={styles.likeCommentDetailsContainer}>
-                                <Text>22.8k </Text>
-                                <Icon name="maps-ugc" />
-                            </View>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.postContainer}>
-                    <ImageBackground source={require('../../assets/images/profilePicture.png')} imageStyle={styles.backgroundImage}
-                        resizeMode="cover"
-                        style={styles.backgroundImage}>
-                        <View style={styles.postDate}>
-                            <Text> 3 Feb</Text>
-                        </View>
-                    </ImageBackground>
-                    <View style={styles.popularityContainer}>
-                        <Text style={styles.grayText}>05 Mins Read</Text>
-                        <Text style={styles.postTitle}>Make desfdaign systems people want to use</Text>
-                        <View style={styles.commentsAndLikesContainer}>
-                            <View style={styles.likeCommentDetailsContainer}>
-                                <Text>22.8k </Text>
-                                <Icon name="thumb-up" />
-                            </View>
-                            <View style={styles.likeCommentDetailsContainer}>
-                                <Text>22.8k </Text>
-                                <Icon name="maps-ugc" />
-                            </View>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.postContainer}>
-                    <ImageBackground source={require('../../assets/images/profilePicture.png')} imageStyle={styles.backgroundImage}
-                        resizeMode="cover"
-                        style={styles.backgroundImage}>
-                        <View style={styles.postDate}>
-                            <Text> 3 Feb</Text>
-                        </View>
-                    </ImageBackground>
-                    <View style={styles.popularityContainer}>
-                        <Text style={styles.grayText}>05 Mins Read</Text>
-                        <Text style={styles.postTitle}>Make design systems people want to use</Text>
-                        <View style={styles.commentsAndLikesContainer}>
-                            <View style={styles.likeCommentDetailsContainer}>
-                                <Text>22.8k </Text>
-                                <Icon name="thumb-up" />
-                            </View>
-                            <View style={styles.likeCommentDetailsContainer}>
-                                <Text>22.8k </Text>
-                                <Icon name="maps-ugc" />
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
+    <TouchableOpacity key={index.toString()} style={styles.postContainer}  onPress={() => navigation.navigate("BlogDetailsScreen",{id: post.id})}>
+    <ImageBackground source={{uri: `https://picsum.photos/200/200?random=${post.id}`}} imageStyle={styles.backgroundImage}
+      resizeMode="cover"
+      style={styles.backgroundImage}>
+      <View style={styles.postDate}>
+        <Text> 3 Feb</Text>
+      </View>
+    </ImageBackground>
+    <View style={styles.popularityContainer}>
+      <Text style={styles.grayText}>05 Mins Read</Text>
+      <Text style={styles.postTitle}>{post.title.substring(1,30)}</Text>
+      <View style={styles.commentsAndLikesContainer}>
+        <View style={styles.likeCommentDetailsContainer}>
+          <Text style={{fontFamily: 'poppins-bold',}}>22.8k </Text>
+          <Icon name="thumb-up" />
         </View>
+        <View style={styles.likeCommentDetailsContainer}>
+          <Text style={{fontFamily: 'poppins-bold'}}>22.8k </Text>
+          <Icon name="maps-ugc" />
+        </View>
+      </View>
     </View>
+  </TouchableOpacity>
 }
 const styles = StyleSheet.create({
     container: {
@@ -183,5 +111,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 25
     }
+    
 });
 export default BlogsComponent;

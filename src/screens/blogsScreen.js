@@ -1,5 +1,5 @@
-import { ScrollView, Image, StyleSheet, Text, View, ImageBackground, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
-import React, { useEffect } from 'react';
+import { ScrollView, Image, StyleSheet, TextInput, Text, View, ImageBackground, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import React, { useEffect, useState } from 'react';
 import { Icon } from 'react-native-elements';
 import colors from '../constants/colors';
 import SearchBox from '../components/searchBox';
@@ -7,83 +7,113 @@ import { connect } from 'react-redux';
 import { fetchPosts } from '../actions/postsActions'
 
 
-const BlogsScreen = ({ navigation, dispatch, loading, loadingErrors, posts, hasErrors  }) => {
+const BlogsScreen = ({ navigation, dispatch, loading, loadingErrors, posts, hasErrors }) => {
 
   useEffect(() => {
     dispatch(fetchPosts())
   }, [dispatch])
+
+  const [search, setSearch] = useState('');
+  const [filteredPost, setfilteredPost] = useState(posts,[]);
+  const [foundResults, setFoundResults] = useState(false)
+
+  const searchFilterFunction = (searchItem) => {
+    console.log(filteredPost);
+    if (searchItem) {
+      let allPosts = posts.filter((post) => (
+        post.title.toLowerCase().includes(searchItem.toLowerCase())
+      ))
+      if (allPosts.length === 0) {
+        setFoundResults(true)
+      }
+      setfilteredPost(allPosts)
+      setSearch(searchItem);
+    }
+    setfilteredPost(posts)
+    setSearch(searchItem);
+  }
   return (
-  <View style={styles.container}>
-    <View style={styles.body}>
-      <View style={styles.headerContainer}>
-        <View>
-          <View
-            style={styles.horizLine}
-          />
-          <View
-            style={[styles.horizLine, styles.firstHoriz]}
-          />
-        </View>
-        <TouchableOpacity onPress={() => navigation.navigate("ProfileScreen")}>
-          <Image
-            style={styles.tinyLogo}
-            source={require('../../assets/images/profilePicture.png')}
-          />
-        </TouchableOpacity>
-      </View>
-      <View>
-        <Text style={styles.boldText}>Blogs</Text>
-        <SearchBox />
-      </View>
-      <ScrollView style={styles.globalPostContainer} showsVerticalScrollIndicator={false}>
-        {(!loading && !loadingErrors) ? (
-            posts.map((post,index) => (
-  
-            <TouchableOpacity key={index.toString()} style={styles.postContainer}  onPress={() => navigation.navigate("BlogDetailsScreen",{id: post.id})}>
-            <ImageBackground source={{uri: `https://picsum.photos/200/200?random=${post.id}`}} imageStyle={styles.backgroundImage}
-              resizeMode="cover"
-              style={styles.backgroundImage}>
-              <View style={styles.postDate}>
-                <Text> 3 Feb</Text>
-              </View>
-            </ImageBackground>
-            <View style={styles.popularityContainer}>
-              <Text style={styles.grayText}>05 Mins Read</Text>
-              <Text style={styles.postTitle}>{post.title.substring(1,30)}</Text>
-              <View style={styles.commentsAndLikesContainer}>
-                <View style={styles.likeCommentDetailsContainer}>
-                  <Text style={{fontFamily: 'poppins-bold',}}>22.8k </Text>
-                  <Icon name="thumb-up" />
-                </View>
-                <View style={styles.likeCommentDetailsContainer}>
-                  <Text style={{fontFamily: 'poppins-bold'}}>22.8k </Text>
-                  <Icon name="maps-ugc" />
-                </View>
-              </View>
-            </View>
+    <View style={styles.container}>
+      <View style={styles.body}>
+        <View style={styles.headerContainer}>
+          <View>
+            <View
+              style={styles.horizLine}
+            />
+            <View
+              style={[styles.horizLine, styles.firstHoriz]}
+            />
+          </View>
+          <TouchableOpacity onPress={() => navigation.navigate("ProfileScreen")}>
+            <Image
+              style={styles.tinyLogo}
+              source={require('../../assets/images/profilePicture.png')}
+            />
           </TouchableOpacity>
-          ))
-        ) : (<Text style={{fontFamily: 'poppins-bold',}}>Loading blogs ... please wait  </Text>)}
-       
-      </ScrollView>
-      <View style={styles.proText}>
-        <Text>Pro</Text>
-      </View>
-      <View style={styles.filtersContainer}>
-        <View>
-          <Text style={{fontFamily: 'poppins-bold'}}>Latest</Text>
-          <View
-            style={styles.activeLine}
-          />
         </View>
-        <Text style={styles.grayText}>Featured</Text>
         <View>
-          <Text style={styles.grayText}>Premium</Text>
+          <Text style={styles.boldText}>Blogs</Text>
+          <View style={styles.containerSearch}>
+            <View style={styles.inputWrapper}>
+              <Icon name="search" color="#000" />
+              <TextInput onChangeText={(text) => searchFilterFunction(text)} value={search} placeholder="Search" style={styles.input} />
+            </View>
+            <TouchableOpacity style={styles.musicContainer}>
+              <Icon name="graphic-eq" color="#000" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        {foundResults && <Text> No results were found </Text>}
+        <ScrollView style={styles.globalPostContainer} showsVerticalScrollIndicator={false}>
+          {(!loading && !loadingErrors) ? (
+            filteredPost.map((post, index) => (
+
+              <TouchableOpacity key={index.toString()} style={styles.postContainer} onPress={() => navigation.navigate("BlogDetailsScreen", { id: post.id })}>
+                <ImageBackground source={{ uri: `https://picsum.photos/200/200?random=${post.id}` }} imageStyle={styles.backgroundImage}
+                  resizeMode="cover"
+                  style={styles.backgroundImage}>
+                  <View style={styles.postDate}>
+                    <Text> 3 Feb</Text>
+                  </View>
+                </ImageBackground>
+                <View style={styles.popularityContainer}>
+                  <Text style={styles.grayText}>05 Mins Read</Text>
+                  <Text style={styles.postTitle}>{post.title.substring(1, 30)}</Text>
+                  <View style={styles.commentsAndLikesContainer}>
+                    <View style={styles.likeCommentDetailsContainer}>
+                      <Text style={{ fontFamily: 'poppins-bold', }}>22.8k </Text>
+                      <Icon name="thumb-up" />
+                    </View>
+                    <View style={styles.likeCommentDetailsContainer}>
+                      <Text style={{ fontFamily: 'poppins-bold' }}>22.8k </Text>
+                      <Icon name="maps-ugc" />
+                    </View>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))
+          ) : (<Text style={{ fontFamily: 'poppins-bold' }}>Loading blogs ... please wait  </Text>)}
+
+        </ScrollView>
+        <View style={styles.proText}>
+          <Text>Pro</Text>
+        </View>
+        <View style={styles.filtersContainer}>
+          <View>
+            <Text style={{ fontFamily: 'poppins-bold' }}>Latest</Text>
+            <View
+              style={styles.activeLine}
+            />
+          </View>
+          <Text style={styles.grayText}>Featured</Text>
+          <View>
+            <Text style={styles.grayText}>Premium</Text>
+          </View>
         </View>
       </View>
     </View>
-  </View>
-  )}
+  )
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -193,6 +223,35 @@ const styles = StyleSheet.create({
     marginStart: 20,
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+
+
+
+  containerSearch: {
+    marginTop: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    backgroundColor: colors.inputColor,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderRadius: 10
+
+  },
+  inputWrapper: {
+    width: '90%',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  input: {
+    fontSize: 18,
+    marginLeft: 10,
+    color: '#a3a3a3'
+  },
+  musicContainer: {
+    backgroundColor: '#fff',
+    flex: 1,
+    borderRadius: 5
   }
 });
 

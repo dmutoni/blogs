@@ -2,19 +2,18 @@ import { ScrollView, Image, StyleSheet, TextInput, Text, View, ImageBackground, 
 import React, { useEffect, useState } from 'react';
 import { Icon } from 'react-native-elements';
 import colors from '../constants/colors';
-import SearchBox from '../components/searchBox';
 import { connect } from 'react-redux';
 import { fetchPosts } from '../actions/postsActions'
 
 
 const BlogsScreen = ({ navigation, dispatch, loading, loadingErrors, posts, hasErrors }) => {
 
+  const [filteredPost, setfilteredPost] = useState([]);
   useEffect(() => {
     dispatch(fetchPosts())
+    setfilteredPost(posts)
   }, [dispatch])
-
   const [search, setSearch] = useState('');
-  const [filteredPost, setfilteredPost] = useState(posts,[]);
   const [foundResults, setFoundResults] = useState(false)
 
   const searchFilterFunction = (searchItem) => {

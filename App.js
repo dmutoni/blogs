@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LandingScreen from './src/screens/landingScreen';
@@ -13,11 +14,10 @@ import AppLoading from "expo-app-loading";
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { composeWithDevTools } from 'redux-devtools-extension';
 import rootReducer from './src/reducers'
-import TestingScreen from './src/screens/testingScreen';
 
-const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 const getFonts = () =>
     Font.loadAsync({
@@ -32,14 +32,14 @@ function App() {
         return (
             <Provider store={store}>
                 <NavigationContainer>
-                    <Stack.Navigator>
-                        <Stack.Screen name="Home" component={LandingScreen} options={{ headerShown: false }} />
-                        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
-                        <Stack.Screen name="BlogsScreen" component={BlogsScreen} options={{ headerShown: false }} />
-                        <Stack.Screen name="BlogDetailsScreen" component={BlogDetailsScreen} options={{ headerShown: false }} />
-                        <Stack.Screen name="AccountInfoScreen" component={AccountInfoScreen} options={{ headerShown: false }} />
-                        <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: false }} />
-                    </Stack.Navigator>
+                    <Drawer.Navigator initialRouteName="Home">
+                        <Drawer.Screen name="Home" component={LandingScreen} />
+                        <Drawer.Screen name="LoginScreen" component={LoginScreen} />
+                        <Drawer.Screen name="BlogsScreen" component={BlogsScreen} />
+                        <Drawer.Screen name="BlogDetailsScreen" component={BlogDetailsScreen} />
+                        <Drawer.Screen name="AccountInfoScreen" component={AccountInfoScreen} />
+                        <Drawer.Screen name="ProfileScreen" component={ProfileScreen} />
+                    </Drawer.Navigator>
                 </NavigationContainer>
             </Provider>
         );

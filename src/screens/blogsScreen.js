@@ -1,36 +1,49 @@
-import { ScrollView, Image, StyleSheet, TextInput, Text, View, ImageBackground, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { ScrollView, Image, StyleSheet, TextInput, Text, View, ImageBackground, TouchableOpacity, FlatList } from "react-native";
 import React, { useEffect, useState } from 'react';
 import { Icon } from 'react-native-elements';
 import colors from '../constants/colors';
 import { connect } from 'react-redux';
 import { fetchPosts } from '../actions/postsActions'
+import BlogsComponent from './../components/blog';
+import SearchBox from './../components/searchBox';
 
 
 const BlogsScreen = ({ navigation, dispatch, loading, loadingErrors, posts, hasErrors }) => {
 
-  const [filteredPost, setfilteredPost] = useState([]);
+  const [filteredPosts, setfilteredPosts] = useState([]);
+  const [reRender, setreRender] = React.useState(true);
+  const [showPostsList, setShowPostsLists] = useState(true);
+
   useEffect(() => {
     dispatch(fetchPosts())
-    setfilteredPost(posts)
+    if (reRender) {
+      setfilteredPosts(posts)
+      setTimeout(() => setreRender(false), 3000);
+    }
   }, [dispatch])
-  const [search, setSearch] = useState('');
-  const [foundResults, setFoundResults] = useState(false)
+  const [foundResults, setFoundResults] = useState(true);
 
   const searchFilterFunction = (searchItem) => {
-    console.log(filteredPost);
     if (searchItem) {
-      let allPosts = posts.filter((post) => (
-        post.title.toLowerCase().includes(searchItem.toLowerCase())
-      ))
-      if (allPosts.length === 0) {
-        setFoundResults(true)
+      const newData = posts.filter(
+        function (item) {
+          const itemData = item.title
+            ? item.title.toUpperCase()
+            : ''.toUpperCase();
+          const textData = searchItem.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+      });
+      if(newData.length === 0) {
+        setFoundResults(false)
       }
-      setfilteredPost(allPosts)
-      setSearch(searchItem);
+      setfilteredPosts(newData);
+      setShowPostsLists(false);
+      setFoundResults(true)
+    } else {
+      setFoundResults(true)
+      setfilteredPosts(posts);
     }
-    setfilteredPost(posts)
-    setSearch(searchItem);
-  }
+    };
   return (
     <View style={styles.container}>
       <View style={styles.body}>
@@ -52,48 +65,18 @@ const BlogsScreen = ({ navigation, dispatch, loading, loadingErrors, posts, hasE
         </View>
         <View>
           <Text style={styles.boldText}>Blogs</Text>
-          <View style={styles.containerSearch}>
-            <View style={styles.inputWrapper}>
-              <Icon name="search" color="#000" />
-              <TextInput onChangeText={(text) => searchFilterFunction(text)} value={search} placeholder="Search" style={styles.input} />
-            </View>
-            <TouchableOpacity style={styles.musicContainer}>
-              <Icon name="graphic-eq" color="#000" />
-            </TouchableOpacity>
-          </View>
+          <SearchBox searchFilterFunction = {searchFilterFunction} />
         </View>
-        {foundResults && <Text> No results were found </Text>}
-        <ScrollView style={styles.globalPostContainer} showsVerticalScrollIndicator={false}>
-          {(!loading && !loadingErrors) ? (
-            filteredPost.map((post, index) => (
-
-              <TouchableOpacity key={index.toString()} style={styles.postContainer} onPress={() => navigation.navigate("BlogDetailsScreen", { id: post.id })}>
-                <ImageBackground source={{ uri: `https://picsum.photos/200/200?random=${post.id}` }} imageStyle={styles.backgroundImage}
-                  resizeMode="cover"
-                  style={styles.backgroundImage}>
-                  <View style={styles.postDate}>
-                    <Text> 3 Feb</Text>
-                  </View>
-                </ImageBackground>
-                <View style={styles.popularityContainer}>
-                  <Text style={styles.grayText}>05 Mins Read</Text>
-                  <Text style={styles.postTitle}>{post.title.substring(1, 30)}</Text>
-                  <View style={styles.commentsAndLikesContainer}>
-                    <View style={styles.likeCommentDetailsContainer}>
-                      <Text style={{ fontFamily: 'poppins-bold', }}>22.8k </Text>
-                      <Icon name="thumb-up" />
-                    </View>
-                    <View style={styles.likeCommentDetailsContainer}>
-                      <Text style={{ fontFamily: 'poppins-bold' }}>22.8k </Text>
-                      <Icon name="maps-ugc" />
-                    </View>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            ))
-          ) : (<Text style={{ fontFamily: 'poppins-bold' }}>Loading blogs ... please wait  </Text>)}
-
-        </ScrollView>
+        { !foundResults && <Text style={styles.resultText}>Results not found</Text>}
+         <FlatList
+         style={styles.globalPostContainer}
+          showsVerticalScrollIndicator={false}
+          data={(showPostsList) ? posts : filteredPosts}
+          keyExtractor={(post) => post.id.toString()}
+          renderItem={({ item }) => (
+            <BlogsComponent post={item}/>
+          )}
+        />
         <View style={styles.proText}>
           <Text>Pro</Text>
         </View>
@@ -223,35 +206,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
-
-
-
-  containerSearch: {
-    marginTop: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    backgroundColor: colors.inputColor,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderRadius: 10
-
-  },
-  inputWrapper: {
-    width: '90%',
-    flexDirection: 'row',
+  resultText: {
+    fontFamily: 'poppins-bold',
+    margin: 100,
     alignItems: 'center'
   },
-  input: {
-    fontSize: 18,
-    marginLeft: 10,
-    color: '#a3a3a3'
-  },
-  musicContainer: {
-    backgroundColor: '#fff',
-    flex: 1,
-    borderRadius: 5
-  }
 });
 
 const mapStateToProps = state => ({

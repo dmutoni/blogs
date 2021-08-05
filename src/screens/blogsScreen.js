@@ -1,11 +1,11 @@
-import { ScrollView, Image, StyleSheet, TextInput, Text, View, ImageBackground, TouchableOpacity, FlatList } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableWithoutFeedback, TouchableOpacity, FlatList } from "react-native";
 import React, { useEffect, useState } from 'react';
-import { Icon } from 'react-native-elements';
 import colors from '../constants/colors';
 import { connect } from 'react-redux';
 import { fetchPosts } from '../actions/postsActions'
 import BlogsComponent from './../components/blog';
 import SearchBox from './../components/searchBox';
+import { color } from "react-native-reanimated";
 
 
 const BlogsScreen = ({ navigation, dispatch, loading, loadingErrors, posts, hasErrors }) => {
@@ -13,6 +13,8 @@ const BlogsScreen = ({ navigation, dispatch, loading, loadingErrors, posts, hasE
   const [filteredPosts, setfilteredPosts] = useState([]);
   const [reRender, setreRender] = React.useState(true);
   const [showPostsList, setShowPostsLists] = useState(true);
+  const [foundResults, setFoundResults] = useState(true);
+  const [textToRender, setTextToRender] = useState('Latest');
 
   useEffect(() => {
     dispatch(fetchPosts())
@@ -21,8 +23,10 @@ const BlogsScreen = ({ navigation, dispatch, loading, loadingErrors, posts, hasE
       setTimeout(() => setreRender(false), 3000);
     }
   }, [dispatch])
-  const [foundResults, setFoundResults] = useState(true);
 
+  const handleTextToRender = (type) => {
+    setTextToRender(type)
+  }
   const searchFilterFunction = (searchItem) => {
     if (searchItem) {
       const newData = posts.filter(
@@ -32,8 +36,8 @@ const BlogsScreen = ({ navigation, dispatch, loading, loadingErrors, posts, hasE
             : ''.toUpperCase();
           const textData = searchItem.toUpperCase();
           return itemData.indexOf(textData) > -1;
-      });
-      if(newData.length === 0) {
+        });
+      if (newData.length === 0) {
         setFoundResults(false)
       }
       setfilteredPosts(newData);
@@ -43,7 +47,7 @@ const BlogsScreen = ({ navigation, dispatch, loading, loadingErrors, posts, hasE
       setFoundResults(true)
       setfilteredPosts(posts);
     }
-    };
+  };
   return (
     <View style={styles.container}>
       <View style={styles.body}>
@@ -64,33 +68,50 @@ const BlogsScreen = ({ navigation, dispatch, loading, loadingErrors, posts, hasE
           </TouchableOpacity>
         </View>
         <View>
-          <Text style={styles.boldText}>Blogs</Text>
-          <SearchBox searchFilterFunction = {searchFilterFunction} />
+          <Text style={styles.boldText}>{textToRender} blogs</Text>
+          <SearchBox searchFilterFunction={searchFilterFunction} />
         </View>
-        { !foundResults && <Text style={styles.resultText}>Results not found</Text>}
-         <FlatList
-         style={styles.globalPostContainer}
+        {!foundResults && <Text style={styles.resultText}>Results not found</Text>}
+       {textToRender === 'Latest' && <FlatList
+          style={styles.globalPostContainer}
           showsVerticalScrollIndicator={false}
           data={(showPostsList) ? posts : filteredPosts}
           keyExtractor={(post) => post.id.toString()}
           renderItem={({ item }) => (
-            <BlogsComponent post={item}/>
+            <BlogsComponent post={item} />
           )}
-        />
+        />}
+        {textToRender === 'Feautured' && <FlatList
+          style={styles.globalPostContainer}
+          showsVerticalScrollIndicator={false}
+          data={(showPostsList) ? posts : filteredPosts}
+          keyExtractor={(post) => post.id.toString()}
+          renderItem={({ item }) => (
+            <BlogsComponent post={item} />
+          )}
+        />}
+         {textToRender === 'Premium' && <FlatList
+          style={styles.globalPostContainer}
+          showsVerticalScrollIndicator={false}
+          data={(showPostsList) ? posts : filteredPosts}
+          keyExtractor={(post) => post.id.toString()}
+          renderItem={({ item }) => (
+            <BlogsComponent post={item} />
+          )}
+        />}
         <View style={styles.proText}>
-          <Text>Pro</Text>
+          <Text style={[textToRender === 'Premium' ? styles.activeTypePost : '']}>Pro</Text>
         </View>
         <View style={styles.filtersContainer}>
-          <View>
-            <Text style={{ fontFamily: 'poppins-bold' }}>Latest</Text>
-            <View
-              style={styles.activeLine}
-            />
-          </View>
-          <Text style={styles.grayText}>Featured</Text>
-          <View>
-            <Text style={styles.grayText}>Premium</Text>
-          </View>
+          <TouchableWithoutFeedback style={styles.activeLine} onPress={() => handleTextToRender('Latest')}>
+            <Text style={[styles.grayText, textToRender === 'Latest' ? styles.activeTypePost : '']}>Latest</Text>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => handleTextToRender('Feautured')}>
+            <Text style={[styles.grayText, textToRender === 'Feautured' ? styles.activeTypePost : '']}>Featured</Text>
+          </TouchableWithoutFeedback>
+          <TouchableOpacity >
+            <Text style={[styles.grayText, textToRender === 'Premium' ? styles.activeTypePost : '']} onPress={() => handleTextToRender('Premium')}>Premium</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -107,7 +128,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 20
+    marginVertical: 0
   },
   tinyLogo: {
     width: 50,
@@ -126,9 +147,7 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.mainGreen,
     borderBottomWidth: 2,
     alignItems: 'center',
-    width: 20,
-    marginStart: 10,
-    marginVertical: 4
+    width: 25
   },
   firstHoriz: {
     width: 25,
@@ -211,6 +230,10 @@ const styles = StyleSheet.create({
     margin: 100,
     alignItems: 'center'
   },
+  activeTypePost: {
+    fontFamily: 'poppins-bold',
+    color: '#000'
+  }
 });
 
 const mapStateToProps = state => ({
